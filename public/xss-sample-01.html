@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./purify.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <p>URLのハッシュに設定された文字列をページ表示するJSが動く。</p>
+  <p>ハッシュに「#&lt;img src=x onerror="location.assign('http://site.example/')"&gt;」とか設定されていると、画像のonerrorでインラインスクリプトが起動されてしまう。</p>
+  <div id="result"></div>
+  <a href="#">URLのハッシュに設定された文字列を、このリンクのhrefに反映する。</a>
+
+  <script>
+    (() => {
+      const url = new URL(location.href);
+      const hash = decodeURIComponent(location.hash.slice(1));
+
+      // DOMPurifyによるサニタイズ
+      document.querySelector('#result').innerHTML = DOMPurify.sanitize(hash) || 'ハッシュが設定されていません。';
+      
+      const linkUrl = new URL(hash, url.origin);
+      // protocolがjavascript:の場合は無視する（httpとhttpsのみ許可）
+      if (linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:') {
+        document.querySelector('a').href = linkUrl;
+      }
+    })();
+  </script>
+</body>
+</html>
