@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./signup.css">
+  <title>アカウント作成</title>
+</head>
+<body>
+  <form id="signup" action="/signup" method="POST">
+    <fieldset>
+      <legend class="form-caption">アカウント作成</legend>
+      <div>
+        <label for="username">メールアドレス</label>
+        <input type="email" id="username" name="username" class="singup-input" required>
+      </div>
+      <div>
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password" class="signup-input" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="パスワードには8文字以上の英数字を入力してください">
+      </div>
+      <p><small>パスワードには8文字以上の英数字を入力してください</small></p>
+      <button id="submit" type="submit">アカウント作成</button>
+    </fieldset>
+  </form>
+  <script>
+    const button = document.querySelector('#submit');
+    const password = document.querySelector('#password');
+    button.addEventListener('click', () => {
+      if (!/^[A-Za-z\d]{8,}$/.test(password.value)) {
+        password.setCustomValidity('パスワードには8文字以上の英数字を入力してください');
+      } else if (!/(?=.*[A-Za-z])(?=.*\d)/.test(password.value)) {
+        password.setCustomValidity('英数字を少なくとも1文字ずつ含めてください');
+      } else {
+        password.setCustomValidity('');
+      }
+    })
+  </script>
+</body>
+</html>

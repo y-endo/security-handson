@@ -27,6 +27,14 @@ app.get("/csp", (req, res) => {
   res.render("csp", { nonce: nonceValue });
 });
 
+// フォームの内容を解析してreq.bodyへ格納する
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/signup', (req, res) => {
+  console.log(req.body);
+  res.send('アカウント作成登録が完了しました');
+})
+
 // サーバを起動する
 app.listen(port, () => {
   console.log(`Server i running on http://localhost${port}`);
